@@ -1,0 +1,4 @@
+# Зависимости для сборки презентаций в PDF (tools/build_pdf.py)
+weasyprint>=60
+markdown>=3.5
+pygments>=2.17

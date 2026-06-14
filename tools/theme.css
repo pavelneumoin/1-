@@ -1,17 +1,31 @@
 /* ====================================================================
    Тема презентаций курса «Программирование на 1С:Элемент»
-   Детская, яркая, крупная. Рендерится в PDF через WeasyPrint.
+   Версия 2 — живой и аккуратный «человеческий» дизайн.
+   Рендер в PDF через WeasyPrint (без браузера).
    ==================================================================== */
 
-@page {
-    size: 297mm 167mm;          /* 16:9, альбомная */
-    margin: 0;
+:root {
+    --ink:      #1d2333;   /* основной текст */
+    --muted:    #6b7387;   /* приглушённый */
+    --line:     #e7e9f0;   /* линии/разделители */
+    --paper:    #ffffff;
+    --paper2:   #f7f8fc;
+
+    --indigo:   #5b54e6;   /* основной акцент */
+    --indigo-d: #3d36b8;
+    --coral:    #ff6b5e;   /* тёплый акцент */
+    --mint:     #16a37b;   /* успех/совет */
+    --amber:    #f4a72c;   /* внимание */
+    --sky:      #2bb3ef;
+
+    --code-bg:  #0f1729;   /* фон редактора */
+    --code-bar: #1b2440;
+    --term-bg:  #0c1a15;
 }
 
+@page { size: 297mm 167mm; margin: 0; }
 * { box-sizing: border-box; }
 
-/* эмодзи-шрифт ограничиваем только диапазонами эмодзи,
-   иначе он перехватывает обычные цифры и буквы */
 @font-face {
     font-family: "EmojiFallback";
     src: local("Noto Color Emoji");
@@ -21,150 +35,213 @@
 }
 
 html { font-family: "DejaVu Sans", "EmojiFallback", sans-serif; }
+body { margin: 0; color: var(--ink); font-size: 20px; line-height: 1.5; }
 
-body {
-    margin: 0;
-    color: #1f2a44;
-    font-size: 20px;
-    line-height: 1.45;
-}
-
-/* ---- слайд ---- */
+/* ====================================================================
+   Слайд
+   ==================================================================== */
 .slide {
     position: relative;
     width: 297mm;
     height: 167mm;
-    padding: 16mm 20mm 18mm 20mm;
+    padding: 13mm 20mm 16mm 20mm;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    background: #ffffff;
+    justify-content: flex-start;
+    background: var(--paper);
     page-break-after: always;
     overflow: hidden;
 }
 .slide:last-child { page-break-after: avoid; }
 
-/* цветная полоса слева у обычного слайда */
-.slide::before {
-    content: "";
-    position: absolute;
-    left: 0; top: 0; bottom: 0;
-    width: 12mm;
-    background: linear-gradient(180deg, #ffb020 0%, #ff7a59 100%);
-}
-.slide.content::before {
-    background: linear-gradient(180deg, #5b8def 0%, #8e6bff 100%);
+/* короткие «обложечные» слайды центрируем по вертикали */
+.slide.title, .slide.section, .slide.summary { justify-content: center; }
+
+/* кикер — маленькая метка-«рубрика» сверху */
+.kicker {
+    display: inline-block;
+    align-self: flex-start;
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--indigo);
+    background: #eeedfd;
+    padding: 5px 12px;
+    border-radius: 20px;
+    margin-bottom: 14px;
 }
 
-/* номер слайда */
-.slide .pageno {
+/* нижний колонтитул */
+.slide .foot {
     position: absolute;
-    right: 14mm; bottom: 9mm;
-    font-size: 15px;
-    color: #9aa3b2;
+    left: 20mm; right: 20mm; bottom: 8mm;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 2px solid var(--line);
+    padding-top: 6px;
+    font-size: 13px;
     font-weight: 700;
+    color: #b9bfcf;
 }
-.slide .brand {
-    position: absolute;
-    left: 20mm; bottom: 9mm;
-    font-size: 14px;
-    color: #c2c9d6;
-    font-weight: 700;
-    letter-spacing: .3px;
-}
+.slide .foot .brand { letter-spacing: .3px; }
 
 /* ---- заголовки ---- */
 .slide h1 {
-    font-size: 46px;
-    line-height: 1.1;
+    font-size: 44px;
+    line-height: 1.08;
     margin: 0 0 14px 0;
-    color: #2540a8;
+    color: var(--ink);
     font-weight: 800;
+    letter-spacing: -0.5px;
 }
+.slide h1 .accent { color: var(--indigo); }
 .slide h2 {
-    font-size: 30px;
-    margin: 0 0 18px 0;
-    color: #ff6a3d;
+    font-size: 28px;
+    margin: 0 0 16px 0;
+    color: var(--indigo-d);
     font-weight: 800;
 }
-.slide h3 {
-    font-size: 24px;
-    margin: 18px 0 8px 0;
-    color: #5b8def;
-}
+.slide h3 { font-size: 23px; margin: 16px 0 8px; color: var(--coral); }
 
 /* ---- текст и списки ---- */
 .slide p { margin: 8px 0; font-size: 22px; }
-.slide ul, .slide ol { margin: 8px 0 8px 0; padding-left: 30px; }
-.slide li { margin: 9px 0; font-size: 22px; }
-.slide ul li::marker { color: #ff7a59; font-size: 22px; }
-.slide ol li::marker { color: #5b8def; font-weight: 800; }
+.slide ul, .slide ol { margin: 8px 0; padding-left: 6px; list-style: none; }
+.slide li { margin: 10px 0; font-size: 22px; padding-left: 36px; position: relative; }
+.slide ul li::before {
+    content: "";
+    position: absolute; left: 6px; top: 12px;
+    width: 11px; height: 11px; border-radius: 3px;
+    background: var(--coral);
+    transform: rotate(45deg);
+}
+.slide ol { counter-reset: li; }
+.slide ol li::before {
+    counter-increment: li;
+    content: counter(li);
+    position: absolute; left: 0; top: 2px;
+    width: 26px; height: 26px;
+    background: var(--indigo); color: #fff;
+    border-radius: 50%;
+    font-size: 15px; font-weight: 800;
+    text-align: center; line-height: 26px;
+}
+.slide strong { color: var(--indigo-d); font-weight: 800; }
+.slide em { color: var(--coral); font-style: normal; font-weight: 700; }
 
-.slide strong { color: #2540a8; }
-.slide em { color: #ff6a3d; font-style: normal; font-weight: 700; }
-
-/* ---- инлайн-код ---- */
+/* инлайн-код */
 .slide :not(pre) > code {
     font-family: "DejaVu Sans Mono", monospace;
-    background: #eef2ff;
-    color: #3a3f8f;
-    padding: 1px 7px;
-    border-radius: 6px;
-    font-size: 0.92em;
+    background: #eef0fb; color: #4039b5;
+    padding: 1px 7px; border-radius: 6px; font-size: 0.9em;
+    font-weight: 700;
 }
 
-/* ---- блоки кода ---- */
-.slide pre {
-    background: #1e2440;
-    color: #e8ecff;
+/* ====================================================================
+   Блок кода — «редактор»
+   ==================================================================== */
+.editor {
+    margin: 10px 0;
     border-radius: 14px;
-    border-left: 7px solid #ff7a59;
-    padding: 16px 20px;
-    margin: 12px 0;
-    font-size: 18px;
-    line-height: 1.5;
     overflow: hidden;
-    box-shadow: 0 6px 0 rgba(30,36,64,0.12);
+    box-shadow: 0 8px 20px rgba(15,23,41,0.16);
 }
-.slide pre code {
+.editor-bar {
+    background: var(--code-bar);
+    padding: 9px 16px;
+    display: flex; align-items: center; gap: 8px;
+}
+.editor-bar .dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+.editor-bar .r { background: #ff5f56; }
+.editor-bar .y { background: #ffbd2e; }
+.editor-bar .g { background: #27c93f; }
+.editor-bar .fname {
+    margin-left: 8px; color: #8b93b3; font-size: 14px;
     font-family: "DejaVu Sans Mono", monospace;
-    background: transparent;
-    color: inherit;
-    padding: 0;
-    white-space: pre-wrap;
-    word-break: break-word;
 }
+.editor pre {
+    background: var(--code-bg);
+    margin: 0; padding: 13px 20px;
+    font-size: 17px; line-height: 1.48;
+}
+.editor pre code {
+    font-family: "DejaVu Sans Mono", monospace;
+    color: #dfe4f5; background: none; white-space: pre-wrap; word-break: break-word;
+}
+/* токены подсветки */
+.t-comment { color: #6b7aa0; font-style: italic; }
+.t-string, .t-str { color: #b7e08a; }
+.t-var     { color: #ffcb6b; font-weight: 700; }
+.t-number  { color: #f7916b; }
+.t-kw      { color: #cf9bf0; font-weight: 700; }
+.t-type    { color: #ffcb6b; }
+.t-builtin { color: #79a8ff; }
+
+/* ====================================================================
+   Блок вывода — «терминал»
+   ==================================================================== */
+.term {
+    margin: 10px 0;
+    border-radius: 14px; overflow: hidden;
+    border: 2px solid #16302a;
+}
+.term-bar {
+    background: #102a22; color: #57d9a3;
+    font-size: 14px; font-weight: 800; letter-spacing: .5px;
+    padding: 7px 16px;
+    font-family: "DejaVu Sans Mono", monospace;
+}
+.term pre {
+    background: var(--term-bg); margin: 0; padding: 12px 20px;
+    font-size: 17px; line-height: 1.45;
+}
+.term pre code {
+    font-family: "DejaVu Sans Mono", monospace;
+    color: #7df0b0; background: none; white-space: pre-wrap;
+}
+
+/* ====================================================================
+   Карточки-акценты (callout)
+   ==================================================================== */
+.callout {
+    margin: 12px 0; padding: 16px 20px 16px 22px;
+    border-radius: 14px; font-size: 22px;
+    border-left: 8px solid var(--indigo);
+    background: var(--paper2);
+}
+.callout p:first-child { margin-top: 0; }
+.callout p:last-child { margin-bottom: 0; }
+.callout .lead { font-weight: 800; display: block; margin-bottom: 4px; font-size: 18px; letter-spacing: .4px; text-transform: uppercase; }
+
+.callout.tip   { background: #e9f8f1; border-color: var(--mint); }
+.callout.tip .lead { color: var(--mint); }
+.callout.warn  { background: #fdeee6; border-color: var(--coral); }
+.callout.warn .lead { color: var(--coral); }
+.callout.quiz  { background: #eeedfd; border-color: var(--indigo); }
+.callout.quiz .lead { color: var(--indigo); }
+.callout.fun   { background: #fff6e2; border-color: var(--amber); }
+.callout.fun .lead { color: #c9820f; }
 
 /* ---- таблицы ---- */
 .slide table {
-    border-collapse: collapse;
-    width: 100%;
-    margin: 12px 0;
-    font-size: 19px;
-    border-radius: 12px;
-    overflow: hidden;
+    border-collapse: separate; border-spacing: 0;
+    width: 100%; margin: 12px 0; font-size: 20px;
+    border-radius: 12px; overflow: hidden;
+    box-shadow: 0 4px 14px rgba(29,35,51,0.08);
 }
 .slide th {
-    background: #5b8def;
-    color: #fff;
-    padding: 10px 14px;
-    text-align: left;
-    font-weight: 800;
+    background: var(--indigo); color: #fff;
+    padding: 11px 16px; text-align: left; font-weight: 800;
 }
-.slide td {
-    padding: 9px 14px;
-    border-bottom: 1px solid #e6eaf2;
-}
-.slide tr:nth-child(even) td { background: #f5f8ff; }
+.slide td { padding: 10px 16px; border-bottom: 1px solid var(--line); background: #fff; }
+.slide tr:nth-child(even) td { background: var(--paper2); }
 
-/* ---- блок-цитата / важное ---- */
+/* блок-цитата → мягкая карточка */
 .slide blockquote {
-    margin: 12px 0;
-    padding: 12px 18px;
-    background: #fff6e9;
-    border-left: 7px solid #ffb020;
-    border-radius: 10px;
-    font-size: 21px;
+    margin: 12px 0; padding: 12px 20px;
+    background: var(--paper2); border-left: 8px solid var(--amber);
+    border-radius: 12px; font-size: 21px; color: #4a5163;
 }
 
 /* ====================================================================
@@ -172,30 +249,38 @@ body {
    ==================================================================== */
 .slide.title {
     justify-content: center;
-    background: linear-gradient(135deg, #2540a8 0%, #5b8def 45%, #8e6bff 100%);
-    color: #ffffff;
-    padding: 24mm 26mm;
+    background:
+        radial-gradient(900px 500px at 80% -10%, rgba(255,255,255,.18), transparent),
+        linear-gradient(135deg, #4b43d6 0%, #6a5bf0 45%, #8e6bff 100%);
+    color: #fff; padding: 22mm 24mm;
 }
-.slide.title::before { display: none; }
-.slide.title h1 {
-    color: #ffffff;
-    font-size: 60px;
-    margin-bottom: 10px;
+.slide.title .kicker {
+    background: rgba(255,255,255,.18); color: #fff;
 }
-.slide.title h2 {
-    color: #ffe3a3;
-    font-size: 32px;
-    margin-bottom: 22px;
-}
-.slide.title p {
-    color: #eaf0ff;
-    font-size: 26px;
-}
-.slide.title .brand { color: rgba(255,255,255,0.7); }
-.slide.title .pageno { color: rgba(255,255,255,0.7); }
+.slide.title h1 { color: #fff; font-size: 62px; margin-bottom: 12px; }
+.slide.title h1 .accent { color: #ffd98a; }
+.slide.title h2 { color: #ffe3a3; font-size: 30px; font-weight: 700; margin-bottom: 18px; }
+.slide.title p  { color: #eef0ff; font-size: 26px; }
+.slide.title .foot { border-top-color: rgba(255,255,255,.25); color: rgba(255,255,255,.75); }
 
-/* финальный слайд «что мы узнали» подсветим мягким фоном */
-.slide.summary { background: #fffaf2; }
-.slide.summary::before {
-    background: linear-gradient(180deg, #ffb020 0%, #ff7a59 100%);
+/* секционный слайд-разделитель */
+.slide.section {
+    justify-content: center; align-items: flex-start;
+    background: linear-gradient(135deg, #11183a 0%, #25204f 100%);
+    color: #fff;
 }
+.slide.section .kicker { background: rgba(255,255,255,.15); color: #ffd98a; }
+.slide.section h1 { color: #fff; font-size: 54px; }
+.slide.section p { color: #c9cce8; font-size: 25px; }
+.slide.section .foot { border-top-color: rgba(255,255,255,.2); color: rgba(255,255,255,.6); }
+
+/* финальный слайд «итоги» */
+.slide.summary { background: var(--paper2); }
+.slide.summary .kicker { background: #ffe9d8; color: var(--coral); }
+
+/* компактный слайд для большого блока кода */
+.slide.tight { justify-content: flex-start; padding-top: 13mm; }
+.slide.tight h1 { font-size: 36px; margin-bottom: 10px; }
+.slide.tight .editor pre { font-size: 14px; line-height: 1.4; padding: 12px 18px; }
+.slide.tight .editor-bar { padding: 6px 14px; }
+.slide.tight .editor-bar .dot { width: 10px; height: 10px; }

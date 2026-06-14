@@ -1,0 +1,128 @@
+/* ====================================================================
+   Тема рабочих листов курса «1С:Элемент». Формат A4, под печать.
+   Рендер в PDF через WeasyPrint.
+   ==================================================================== */
+
+@page {
+    size: A4;
+    margin: 16mm 15mm 15mm 15mm;
+    @bottom-left  { content: "1С:Элемент · курс с нуля";
+                    font-size: 8.5pt; color: #b3b8c6; }
+    @bottom-right { content: counter(page) " / " counter(pages);
+                    font-size: 8.5pt; color: #b3b8c6; }
+}
+
+* { box-sizing: border-box; }
+
+@font-face {
+    font-family: "EmojiFallback";
+    src: local("Noto Color Emoji");
+    unicode-range: U+2190-21FF, U+2300-23FF, U+25A0-25FF,
+        U+2600-27BF, U+2B00-2BFF, U+FE00-FE0F, U+1F000-1FAFF;
+}
+
+html { font-family: "DejaVu Sans", "EmojiFallback", sans-serif; }
+body { margin: 0; color: #1d2333; font-size: 11.5pt; line-height: 1.45; }
+
+/* заголовок листа */
+h1 {
+    font-size: 21pt;
+    color: #3d36b8;
+    margin: 0 0 4px 0;
+    padding-bottom: 8px;
+    border-bottom: 3px solid #5b54e6;
+    line-height: 1.15;
+}
+
+/* строка «Имя / Дата» (первый абзац после h1) */
+h1 + p { color: #6b7387; font-size: 11pt; margin: 8px 0 2px; }
+
+/* задания */
+h2 {
+    font-size: 14.5pt;
+    color: #21263a;
+    margin: 18px 0 6px;
+    padding: 4px 0 4px 12px;
+    border-left: 5px solid #ff6b5e;
+}
+h3 { font-size: 12.5pt; color: #3d36b8; margin: 12px 0 4px; }
+
+p { margin: 6px 0; }
+ul, ol { margin: 6px 0; padding-left: 22px; }
+li { margin: 4px 0; }
+strong { color: #2b2f45; }
+em { color: #ff6b5e; font-style: normal; font-weight: 700; }
+hr { border: none; border-top: 1px solid #e7e9f0; margin: 14px 0; }
+
+a { color: #3d36b8; }
+
+/* звёздочки сложности */
+.star { color: #f4a72c; }
+
+/* инлайн-код */
+:not(pre) > code {
+    font-family: "DejaVu Sans Mono", monospace;
+    background: #eef0fb; color: #4039b5;
+    padding: 0 5px; border-radius: 5px; font-size: 0.9em;
+    font-weight: 700;
+}
+
+/* справочный код (памятка, примеры) */
+.ref {
+    margin: 8px 0;
+    background: #f5f6fb;
+    border: 1px solid #e2e6f1;
+    border-radius: 8px;
+    padding: 9px 14px;
+}
+.ref pre { margin: 0; }
+.ref code, .ref pre {
+    font-family: "DejaVu Sans Mono", monospace;
+    font-size: 10pt; line-height: 1.5;
+    white-space: pre-wrap; word-break: break-word; color: #2a2f45;
+}
+/* подсветка на светлом фоне */
+.t-comment { color: #8a93a6; font-style: italic; }
+.t-str     { color: #1a7f37; }
+.t-var     { color: #b5530f; font-weight: 700; }
+.t-number  { color: #b5530f; }
+.t-kw      { color: #6c3fd8; font-weight: 700; }
+.t-type    { color: #b5530f; }
+.t-builtin { color: #1565c0; }
+
+/* поле для записи кода (скелет с пустыми строками) */
+.fillin {
+    margin: 8px 0;
+    border: 1.5px dashed #c5c9d6;
+    border-radius: 8px;
+    padding: 8px 14px 4px;
+    background: #fcfcff;
+}
+.fillin .cl {
+    font-family: "DejaVu Sans Mono", monospace;
+    font-size: 10pt; color: #7a8196;
+    white-space: pre-wrap;
+}
+.fillin .wl {
+    height: 8.5mm;
+    border-bottom: 1px dashed #d6dae6;
+}
+
+/* таблицы */
+table {
+    border-collapse: collapse; width: 100%;
+    margin: 8px 0; font-size: 10.5pt;
+}
+th { background: #5b54e6; color: #fff; padding: 6px 10px; text-align: left; }
+td { padding: 6px 10px; border-bottom: 1px solid #e7e9f0; }
+tr:nth-child(even) td { background: #f6f7fc; }
+
+/* «памятка»-цитата */
+blockquote {
+    margin: 8px 0; padding: 8px 14px;
+    background: #fff6e2; border-left: 5px solid #f4a72c;
+    border-radius: 8px; color: #5a4a2a;
+}
+
+h2, h3 { break-after: avoid; }
+.ref, .fillin, table { break-inside: avoid; }

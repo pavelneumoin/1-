@@ -59,10 +59,9 @@ docs/
   metodichka.md               — методические указания для преподавателя
 uroki/
   urok-01-znakomstvo/
-    prezentaciya.md
-    prezentaciya.pdf
-    rabochiy-list.md
-    domashnyaya-rabota.md
+    prezentaciya.md / prezentaciya.pdf
+    rabochiy-list.md / rabochiy-list.pdf
+    domashnyaya-rabota.md / domashnyaya-rabota.pdf
     resheniya.md
   urok-02-peremennye/
     ...
@@ -96,6 +95,19 @@ python3 tools/build_pdf.py
 # собрать только один урок
 python3 tools/build_pdf.py uroki/urok-01-znakomstvo/prezentaciya.md
 ```
+
+Рабочие листы и листы домашней работы собираются отдельным сборщиком
+(формат A4, под печать, с полями для записи кода):
+
+```bash
+# собрать ВСЕ рабочие листы и домашки
+python3 tools/build_worksheets.py
+
+# собрать один лист
+python3 tools/build_worksheets.py uroki/urok-01-znakomstvo/rabochiy-list.md
+```
+
+Оформление листов — в `tools/worksheet.css`.
 
 PDF появится рядом с исходником: `uroki/.../prezentaciya.pdf`.
 Оформление слайдов задаётся в `tools/theme.css` — цвета и шрифты можно
